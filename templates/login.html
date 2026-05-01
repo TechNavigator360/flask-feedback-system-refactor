@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>KCC Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        <main class="card">
+            <h1>KCC Coaching Tool</h1>
+
+            {% for message in get_flashed_messages() %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}    
+
+                <form method="post">
+                    <label>Role</label>
+                    <select name="role">
+                        <option value="Agent">Agent</option>
+                        <option value="Coach">Coach</option>
+                    </select>
+
+                    <label>Username</label>
+                    <input type="text" name="username">
+
+                    <label>Password</label>
+                    <input type="password" name="password">
+
+                    <button type="submit">Login</button>
+                </form>
+        </main>
+    </body>
+</html>
