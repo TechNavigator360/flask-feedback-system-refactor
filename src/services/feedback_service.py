@@ -23,3 +23,21 @@ def create_feedback(agent, feedback_text, timestamp):
     }
 
     return True, "Feedback added successfully.", feedback
+
+VALID_FEEDBACK_STATUSES = [
+    "Not Integrated", 
+    "Integrated"
+]
+
+def update_feedback_status(feedback_list, feedback_id, new_status):
+    if new_status not in VALID_FEEDBACK_STATUSES:
+        return False, "Invalid feedback status."
+    
+    for feedback in feedback_list:
+        if feedback["feedback_id"] == feedback_id:
+            feedback["status"] = new_status
+            feedback["updated_at"] = datetime.now()
+
+            return True, "Feedback status updated successfully."
+        
+    return False, "Feedback item not found."

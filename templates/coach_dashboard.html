@@ -12,9 +12,15 @@
                 <a href="{{ url_for('logout') }}">Logout</a>
             </header>
 
-            {% for message in get_flashed_messages() %}
-                <p class="message">{{ message }}</p>
-            {% endfor %}
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
 
             <section class="panel">
                 <h2>Create Account</h2>
@@ -22,7 +28,7 @@
                     <label>Role</label>
                     <select name="role">
                         <option value="Agent">Agent</option>
-                        <option vlaue="Coach">Coach</option>
+                        <option value="Coach">Coach</option>
                     </select>
 
                     <label>Username</label>
@@ -59,7 +65,21 @@
                 <article class="feedback-items">
                     <strong>{{ feedback.agent }}</strong>
                     <p>{{ feedback.feedback_text }}</p>
-                    <small>{{ feedback.status }}</small>
+                    <p>Status: {{ feedback.status }}</p>
+
+                    <form method="POST" action="{{ url_for('update_feedback_status_route', feedback_id=feedback.feedback_id) }}">
+                        <select name="status">
+                            <option value="Not Integrated" {% if feedback.status == "Not Integrated" %}selected{% endif %}>
+                                Not Integrated
+                            </option>
+                            <option value="Integrated" {% if feedback.status == "Integrated" %}selected{% endif %}>
+                                Integrated
+                            </option>
+                        </select>
+
+                        <button type="submit">Update Status</button>
+                    </form>
+
                 </article>
                 {% endfor %} 
             </section>
