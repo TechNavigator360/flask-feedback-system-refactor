@@ -98,3 +98,19 @@ http://127.0.0.1:5000
 - Passwords are currently stored in plain text (planned improvement)
 - CSV is used as a temporary data store (planned migration to database)
 - This project is actively being refactored and extended
+
+---
+
+### Latest update
+
+Implemented coach feedback status updates.
+
+Coaches can now change feedback from `Not Integrated` to `Integrated`.  
+The update goes through the Flask route, service layer, and CSV repository flow.
+
+Tested with pytest:
+
+- 11 tests passing
+- feedback creation tests
+- feedback status update tests
+- authentication/user service tests
