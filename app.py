@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from src.repositories.csv_repository import load_data, save_data
 from src.services.auth_service import authenticate_user
 from src.services.user_service import create_user
-from src.services.feedback_service import create_feedback
+from src.services.feedback_service import create_feedback, update_feedback_status
 
 import time
 
@@ -110,7 +110,7 @@ def add_feedback():
     users, feedback_data, report_data = load_data()
 
     agent = request.form.get("agent", "")
-    feedback_text = request.form.get("feedback_get", "")
+    feedback_text = request.form.get("feedback_text", "")
 
     success, message, new_feedback = create_feedback(
         agent, 
@@ -126,6 +126,33 @@ def add_feedback():
     save_data(users, feedback_data, report_data)
     flash(message)
 
+    return redirect(url_for("coach_dashboard"))
+
+@app.route("/coach/update-feedback-status/<feedback_id>", methods=["POST"])
+def update_feedback_status_route(feedback_id):
+    current_user = session.get("current_user")
+
+    if not current_user:
+        return redirect(url_for("login"))
+    
+    if current_user["role"] != "Coach":
+        flash("Only coaches can update feedback status.")
+        return redirect(url_for("login"))
+    
+    users, feedback_data, report_data = load_data()
+
+    new_status = request.form.get("status", "")
+
+    success, message = update_feedback_status(
+        feedback_data, 
+        feedback_id, 
+        new_status
+    )
+
+    if success:
+        save_data(users, feedback_data, report_data)
+
+    flash(message)
     return redirect(url_for("coach_dashboard"))
 
 @app.route("/logout")
