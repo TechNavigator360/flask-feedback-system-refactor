@@ -4,6 +4,7 @@ from src.repositories.csv_repository import load_data, save_data
 from src.services.auth_service import authenticate_user
 from src.services.user_service import create_user
 from src.services.feedback_service import create_feedback, update_feedback_status
+from src.middleware.auth_middleware import login_required, coach_required, agent_required
 
 import time
 
@@ -48,11 +49,9 @@ def login():
     
 
 @app.route("/agent")
+@agent_required
 def agent_dashboard():
     current_user = session.get("current_user")
-
-    if not current_user:
-        return redirect(url_for("login"))
     
     users, feedback_data, report_data = load_data()
 
@@ -63,20 +62,23 @@ def agent_dashboard():
 
     return render_template(
         "agent_dashboard.html",
-        user=current_user, 
+        user=current_user,
         feedback_items=agent_feedback
     )
 
 
 @app.route("/coach")
+@coach_required
 def coach_dashboard():
     current_user = session.get("current_user")
-
-    if not current_user:
-        return redirect(url_for("login"))
     
     users, feedback_data, report_data = load_data()
-    agents = [user for user in users if user["role"] == "Agent"]
+
+    # Retrieve all users with the Agent role
+    agents = [
+        user for user in users 
+        if user["role"] == "Agent"
+    ]
 
     return render_template(
         "coach_dashboard.html",
@@ -87,6 +89,7 @@ def coach_dashboard():
 
 
 @app.route("/coach/create-account", methods=["POST"])
+@coach_required
 def create_account():
     users, feedback_data, report_data = load_data()
 
@@ -106,6 +109,7 @@ def create_account():
     return redirect(url_for("coach_dashboard"))
 
 @app.route("/coach/add-feedback", methods=["POST"])
+@coach_required
 def add_feedback():
     users, feedback_data, report_data = load_data()
 
@@ -129,15 +133,8 @@ def add_feedback():
     return redirect(url_for("coach_dashboard"))
 
 @app.route("/coach/update-feedback-status/<feedback_id>", methods=["POST"])
+@coach_required
 def update_feedback_status_route(feedback_id):
-    current_user = session.get("current_user")
-
-    if not current_user:
-        return redirect(url_for("login"))
-    
-    if current_user["role"] != "Coach":
-        flash("Only coaches can update feedback status.")
-        return redirect(url_for("login"))
     
     users, feedback_data, report_data = load_data()
 
