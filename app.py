@@ -5,11 +5,17 @@ from src.services.auth_service import authenticate_user
 from src.services.user_service import create_user
 from src.services.feedback_service import create_feedback, update_feedback_status
 from src.middleware.auth_middleware import login_required, coach_required, agent_required
+from src.database.db import db
+from src.database.models import User
 
 import time
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -151,6 +157,9 @@ def update_feedback_status_route(feedback_id):
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     app.run(debug=True)
