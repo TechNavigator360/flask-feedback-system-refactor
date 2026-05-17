@@ -23,12 +23,7 @@ def login():
         role = request.form.get("role", "")
 
         user = authenticate_user(users, username, password, role)
-
-        print("INPUT:", username, password, role)
-        print("MATCHES:", [
-            u for u in users if u["name"] == username
-        ])
-
+        
 
         if not user:
             flash("Invalid credentials.")
