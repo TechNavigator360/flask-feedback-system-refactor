@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF=8">
+        <title>Coach Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+        <main class="page">
+            <header>
+                <h1>Coach Dashboard</h1>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </header>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+
+            <section class="panel">
+                <h2>Create Account</h2>
+                <form method="post" action="{{ url_for('create_account') }}">
+                    <label>Role</label>
+                    <select name="role">
+                        <option value="Agent">Agent</option>
+                        <option value="Coach">Coach</option>
+                    </select>
+
+                    <label>Username</label>
+                    <input type="text" name="username">
+
+                    <label>Password</label>
+                    <input type="password" name="password">
+
+                    <button type="submit">Create Account</button>
+                </form>
+            </section>
+
+            <section class="panel">
+                <h2>Add Feedback</h2>
+                <form method="post" action="{{ url_for('add_feedback') }}">
+                    <label>Agent</label>
+                    <select name="agent">
+                        <option>Select Agent</option>
+                        {% for agent in agents %}
+                            <option value="{{ agent.name }}">{{ agent.name }}</option>
+                        {% endfor %}    
+                    </select>
+
+                    <label>Feedback</label>
+                    <textarea name="feedback_text"></textarea>
+
+                    <button type="submit">Add Feedback</button>
+                </form>
+            </section>
+
+            <section type="panel">
+                <h2>Existing Feedback</h2>
+                {% for feedback in feedback_items %}
+                <article class="feedback-items">
+                    <strong>{{ feedback.agent }}</strong>
+                    <p>{{ feedback.feedback_text }}</p>
+                    <p>Status: {{ feedback.status }}</p>
+
+                    <form method="POST" action="{{ url_for('update_feedback_status_route', feedback_id=feedback.feedback_id) }}">
+                        <select name="status">
+                            <option value="Not Integrated" {% if feedback.status == "Not Integrated" %}selected{% endif %}>
+                                Not Integrated
+                            </option>
+                            <option value="Integrated" {% if feedback.status == "Integrated" %}selected{% endif %}>
+                                Integrated
+                            </option>
+                        </select>
+
+                        <button type="submit">Update Status</button>
+                    </form>
+
+                </article>
+                {% endfor %} 
+            </section>
+        </main>
+    </body>
+</html>

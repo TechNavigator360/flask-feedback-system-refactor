@@ -1,0 +1,12 @@
+type,username,password,role,feedback_id,agent,feedback_text,status,report_id,date,feedback_applied,updated_at
+user,agent1,pass123,Agent,,,,,,,,
+user,coach1,pass456,Coach,,,,,,,,
+user,agent2,pass456,Agent,,,,,,,,
+user,agent3,pass456,Agent,,,,,,,,
+user,agent5,pass753,Agent,,,,,,,,
+feedback,,,,feedback_1732177531,agent1,feedback_agent1_01,Integrated,,,,2024-11-21 09:26:57
+feedback,,,,feedback_1732177545,agent2,feedback_agent2_01,Integrated,,,,2024-11-22 11:04:31
+feedback,,,,feedback_1732177579,agent1,feedback_agent1_02,Integrated,,,,2024-11-21 09:34:40
+feedback,,,,feedback_1732177590,agent1,feedback_agent1_03,Not Integrated,,,,2024-11-21 09:26:30
+feedback,,,,feedback_1732177608,agent2,feedback_agent2_02,Integrated,,,,2024-11-21 21:31:04
+feedback,,,,feedback_1732221083,agent3,hallo,Integrated,,,,2024-11-22 12:02:04

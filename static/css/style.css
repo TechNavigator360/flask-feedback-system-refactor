@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #333;
+}
+
+.card,
+.page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 24px;
+    background: white;
+    border-radius: 8px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input,
+select,
+textarea,
+button {
+    padding: 10px;
+    font-size: 1rem;
+}
+
+button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+}
+
+.error {
+    color: #d00000;
+}
+
+.message {
+    color: green;
+}
+
+.feedback-item {
+    padding: 12px;
+    margin-top: 8px;
+    background: #f7f7f7;
+    border-radius: 6px;
+}
+
+.flash-messages {
+    list-style: none;
+    padding: 0;
+}
+
+.flash-messages li {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
